@@ -22,7 +22,7 @@ class Door : public Actor {
 
   Door(string data, std::unordered_map<string,Room*>* rooms, Game* g);
 
-  Room* getConnectedRoom(Room* current);
+  Room* getConnectedRoom(Room* current) const;
   
   string serialize() const;
 

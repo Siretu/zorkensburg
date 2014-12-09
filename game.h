@@ -31,6 +31,7 @@ class Game {
   Game();
   Game(string filename);
   ~Game();
+
   std::string flush() {
     std::string temp = buffer;
     buffer = "";
@@ -48,7 +49,7 @@ class Game {
   
   bool bufferEmpty() const {return (buffer == "");}
   
-  std::vector<Actor*> getActors() {
+  std::vector<Actor*> getActors() const{
     return actors;
   }
 
@@ -61,7 +62,7 @@ class Game {
 
   void addDoor(Door* d) {doors.insert(d);}
   void removeDoor(Door* d) {doors.erase(d);}
-  std::unordered_set<Door*> getDoors() {return doors;}
+  std::unordered_set<Door*> getDoors() const {return doors;}
 
 
   string serialize() const;

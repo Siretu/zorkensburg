@@ -12,6 +12,7 @@
 #include <strings.h>
 #include <functional>
 #include "npc.h"
+#include "actor.h"
 
 typedef bool (*lambdas) (std::string);
 

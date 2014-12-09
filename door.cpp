@@ -25,7 +25,7 @@ Door::Door(string data, std::unordered_map<string,Room*>* rooms, Game* game) : A
 
 }
 
-Room* Door::getConnectedRoom(Room* from){
+Room* Door::getConnectedRoom(Room* from) const{
   if (lockedMessage == "") {
     if(from == r1){
       return r2;

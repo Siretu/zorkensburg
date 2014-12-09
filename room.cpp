@@ -28,7 +28,7 @@ bool Room::addExit(string s, Door* d) {
   return true;
 }
 
-Door* Room::getExit(string s){
+Door* Room::getExit(string s) const{
   std::unordered_map<string,string> short_names;
   short_names["west"] = "w";
   short_names["east"] = "e";
@@ -43,7 +43,7 @@ Door* Room::getExit(string s){
   auto it = exits.find(s);
   
   if(it!=exits.end()) {
-    return exits[s];
+    return exits.at(s);
   }
   return NULL;
 }
