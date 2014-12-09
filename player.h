@@ -12,7 +12,6 @@ class Player : public Character {
   Parser* p;
  public:
   Player(string s,Game* g,Room* r);
-  Player(Game* instance, Room* l);
 
   void death();
   bool action();

@@ -22,9 +22,6 @@ Player::Player(string data, Game* instance, Room* r) : Character(instance,r,data
   p = new Parser(this,instance);
 }
 
-Player::Player(Game* instance, Room* l) : Player("Player;100",instance,l) {
-}
-
 // TODO: Implement death
 void Player::death() {}
 

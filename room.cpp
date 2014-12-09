@@ -9,16 +9,10 @@
 using std::string;
 
 Room::Room(string data, Game* game) {
-  int index1 = data.find_first_of(";");
-  int index2 = data.find_first_of(";", index1 + 1);
-  
-  name = data.substr(0,index1);
-  description = data.substr(index1 + 1, index2 - index1 - 1);
-  if (data.substr(index2 + 1) == "1") {
-    dark = true;
-  } else {
-    dark = false;
-  }
+  auto d = split(data,';');
+  name = d[0];
+  description = d[1];
+  dark = (d[2] == "1");
 
   g = game;
 }
