@@ -1,3 +1,10 @@
+# Misc
+*~
+*.txt
+*log
+save*
+
+
 # Compiled Object files
 *.slo
 *.lo
