@@ -1,0 +1,30 @@
+ROOM:West field;You are in an open field west of a big white house with a boarded front door.;0
+CONTAINER:mailbox;I see nothing special about the mailbox
+ITEM:leaflet#letter;It contains game instructions. It doesn't make sense to you.;0
+ENDCONT
+ROOM:North of house;You are facing the north side of a white house. There is no door here, and all the windows are barred.;0
+ROOM:East of house;You are behind the white house. In one corner of the house there is a window which is slightly ajar.;0
+ROOM:Kitchen;You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west, and a dark staircase can be seen leading upward. To the east is a small window which is open.;0
+ITEM:Brown sack#sack#bag;The elongated brown sack sits on the table, smelling of hot peppers.;0
+CONTAINER:Glass bottle#bottle;A clear glass bottle is here
+ITEM:Water;A quantity of water.;0
+ENDCONT
+ROOM:Living room;You are in the living room. There is a door to the east. To the west is a wooden door with strange gothic lettering, which appears to be nailed shut. In the center of the room is a large oriental rug. There is a trophy case here. On hooks above the mantlepiece hangs an elvish sword of great antiquity. A battery-powered brass lantern is on the trophy case.;0
+PLAYER:
+ENDCHAR
+ITEM:Rug#carpet;Foo;1
+ITEM:Lantern#Lamp#Brass lantern;A battery-powered brass lantern;0
+ROOM:Cellar;You are in a dark and damp cellar with a narrow passageway leading east, and a crawlway to the south. To the west is the bottom of a steep metal ramp which is unclimbable. The door crashes shut, and you hear someone barring it.;1
+ROOM:nowhere;You are in a grues' nest.;1
+DOOR:East of house;Kitchen;in;out;;window;open
+DOOR:Living room;nowhere;w;e;The door is barred shut.;_gothicdoor;
+DOOR:West field;North of house;n;w;;door;
+DOOR:North of house;East of house;e;n;;door;
+DOOR:Living room;Cellar;d;u;;trapdoor;open#rugpulled#Foobar
+DOOR:Kitchen;Living room;w;e;;door;
+EVENT:open;window;window;!open;LOCKMESSAGE#;MESSAGE#With great effort, you open the window far enough to allow passage.;FAILMESSAGE#It's already open, dimwit!;SET#open
+EVENT:close;window;window;open;FAILMESSAGE#Close a closed window? That's just stupid.;LOCKMESSAGE#The window is closed.;MESSAGE#You only barely manage to close the window.;UNSET#open
+EVENT:pull;carpet;trapdoor;!rugpulled;FAILMESSAGE#Having moved the carpet previously, you find it impossible to move it again.;LOCKMESSAGE#The door is closed;MESSAGE#With a great effort, the rug is moved to one side of the room. With the rug moved, the dusty cover of a closed trapdoor appears.;FINDABLE#1;SET#Foobar;SET#rugpulled
+EVENT:open;trapdoor;trapdoor;rugpulled&!open;LOCKMESSAGE#;MESSAGE#The door reluctantly opens to reveal a rickety staircase descending into darkness.;SET#open
+EVENT:light;Lamp;Lamp;!lightsource;FAILMESSAGE#It's already turned on!;MESSAGE#You light up the lamp.;SET#lightsource
+EVENT:douse;Lamp;Lamp;lightsource;FAILMESSAGE#It's already turned off!;MESSAGE#You turn off the lamp.;UNSET#lightsource
