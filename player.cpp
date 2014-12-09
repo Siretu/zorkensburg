@@ -17,15 +17,16 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-Player::Player(string s, Game* instance, Room* r) : Character(instance,r,s) {
+
+Player::Player(string data, Game* instance, Room* r) : Character(instance,r,data) {
   p = new Parser(this,instance);
-  _inventory = new Container(instance);
-  // TODO: Fix health?
-  _desc = "The player character. Also called PC. Not to be confused with Mac";
 }
 
 Player::Player(Game* instance, Room* l) : Player("Player;100",instance,l) {
 }
+
+// TODO: Implement death
+void Player::death() {}
 
 bool Player::action() {
   string input;
@@ -63,14 +64,18 @@ bool Player::go(string args) {
   if (!enter(args)) {
     g->push("No exit for direction: " + args);
   } else if (location != oldLocation) {
-    if (location->isDark()){
-      if(!oldLocation->isDark()) {
-	g->push("You have moved into a dark place.\n\n");
-      }
-      g->push("It is pitch black. You are likely to be eaten by a grue.");
-    } else {
-      g->push(location->getDescription());
+    auto temp = oldLocation->getActors();
+    for (auto it = temp.begin(); it != temp.end();++it){
+      (*it)->removeFlag("playerishere");
     }
+    temp = location->getActors();
+    for (auto it = temp.begin(); it != temp.end();++it){
+      (*it)->addFlag("playerishere");
+    }
+    if(!oldLocation->isDark() && location->isDark()) {
+      g->push("You have moved into a dark place.\n\n");
+    }
+    g->push(location->getDescription());
   }
 }
 
@@ -84,10 +89,8 @@ bool Player::pick_up(string args) {
       g->push("Didn't find "+args+" to pick up.");
       return false;
     }
-  }/*
-  if(confirm("Found "+*f->getName()+", pick this up?")){
-    
-  }*/
+  }
+
   Actor* containing = f.trackback[*f];
   Item* i = dynamic_cast<Item*>(*f);
   if (i != NULL) {
@@ -139,11 +142,7 @@ bool Player::inventory(string args) {
 
 string Player::serialize() const {
   string result = "PLAYER:";
-  result += "\n";
-  std::unordered_set<Item*> items = getInventory()->getItems();  
-  for (auto it = items.begin(); it != items.end();++it) {
-    result += (*it)->serialize();    
-  }
-  result += "ENDCHAR\n";
+  result += Character::serialize();
+
   return result;
 }

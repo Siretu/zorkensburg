@@ -12,6 +12,7 @@ class Door; // Forward Declaration
 
 using std::string;
 using std::vector;
+using std::unordered_set;
 
 class Game {
  protected:
@@ -71,7 +72,9 @@ class Game {
 };
 
 string interval(string s, int fr, int to);
-vector<string> split(string s, char on);
+vector<string> split(string s, char on) ;
+string join(vector<string> s, char on) ;
+string join(unordered_set<string> s, char on) ;
 
 bool strcomp(string a, string b);
 bool confirm(string s);

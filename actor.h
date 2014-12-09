@@ -13,27 +13,42 @@ using std::string;
 using std::cerr;
 using std::endl;
 
-typedef bool (*lambdas) (std::string);
+class Character; //Forward Declaration
 
 class Actor {
  protected:
   std::vector<string> _names;
   string _desc;
-  std::unordered_map<string,std::vector<std::function<bool(string)>>> events;
+  std::unordered_map<string,std::vector<std::function<bool(string, Character*)>>> events;
   std::unordered_set<string> flags;
 
  public:
   bool hidden = false;
-  string id;
   Game* g;
- Actor(Game* instance, string n, string d) : _desc(d), g(instance), id(n){
-    _names = parseNames(n);
+ Actor(Game* instance, string data) : g(instance){
+    std::vector<string> d = split(data,';');
+    addNames(parseNames(d[0]));
+    addFlags(parseNames(d[1]));
+    cerr << "Parsing desc" << endl;
+    cerr << data << endl;
+    _desc = d[2];
+    cerr << "Done parsing desc" << endl;
   }
- Actor(Game* instance) : Actor(instance,"Some actor","Just another actor description") {}
+ Actor(Game* instance) : Actor(instance,"Some actor;;Just another actor description") {}
 
-  virtual bool action() = 0;
+  virtual bool action() {
+    doEvent("onAction#","");
+  }
   
-  virtual std::string serialize() const = 0;
+  virtual std::string serialize() const {
+    string result = "";
+    result += join(_names,'#');
+    result += ";";
+    result += join(flags,'#');
+    result += ";";
+    result += getDesc();
+    return result;
+  }
 
   virtual std::unordered_set<Actor*>* getContained() const {
     return new std::unordered_set<Actor*>;
@@ -84,9 +99,9 @@ class Actor {
     auto it = events.find(s);
     bool didsmth = false;
     if(it!=events.end()) {
-      std::vector<std::function<bool(string)>> e = (*it).second;
+      std::vector<std::function<bool(string,Character*)>> e = (*it).second;
       for (auto it2 = e.begin(); it2 != e.end();++it2) {
-	if ((*it2)(t)) {
+	if ((*it2)(t,NULL)) {
 	  didsmth = true;
 	}
       }
@@ -95,7 +110,7 @@ class Actor {
       return false;
     }
   }
-  void addEvent(string s, std::function<bool(string)> l) {
+  void addEvent(string s, std::function<bool(string,Character*)> l) {
     events[s].push_back(l);
   }
 
@@ -140,6 +155,16 @@ class Actor {
     return result;
   }
   
+  string getID() const {
+    if (_names.size() > 1) {
+      return _names[1];
+    } else if (_names.size() > 0) {
+      return _names[0];
+    } else {
+      return "";
+    }
+  }
+
 };
 
 #endif

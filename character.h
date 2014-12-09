@@ -16,17 +16,19 @@ class Character : public Actor{
   int health;
 
  public:
- Character(Game* instance, Room* l, std::string s) : Actor(instance,s,s), location(l) {}
+ Character(Game* instance, Room* l, std::string data) : Actor(instance,data), location(l) {
+    _inventory = new Container(instance,"Container;;Default Container;0");
+    // TODO: Fix health?
+  }
 
-  virtual bool action() = 0;
+  virtual void death() = 0;
 
   virtual bool drop(std::string args) = 0;
   virtual bool go(std::string args) = 0;
   virtual bool attack(std::string args) = 0;
   virtual bool pick_up(std::string args) = 0;
   
-
-  virtual std::string serialize() const = 0;  
+  virtual std::string serialize() const;
 
   bool enter(std::string dir);
 
@@ -36,5 +38,6 @@ class Character : public Actor{
 
   virtual std::unordered_set<Actor*>* getContained() const {return _inventory->getContained();}
 
+  void triggerEnter(Room* l);
 };
 #endif

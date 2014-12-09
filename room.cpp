@@ -61,18 +61,22 @@ string Room::serialize() const {
   result += description;
   result += ";";
   result += dark ? "1" : "0";
-  result += "\n";
 
   for (auto it = actors.begin(); it != actors.end(); ++it) {
+    result += "\n";
     result += (*it)->serialize();
   }
   for (auto it = items.begin(); it != items.end(); ++it) {
+    result += "\n";
     result += (*it)->serialize();
   }
   return result;
 }
 
 string Room::getDescription() const{
+  if (isDark()) {
+    return "It is pitch black. You are likely to be eaten by a grue.";
+  }
   string result = "";
   result = description;
   std::vector<Item*> visibleItems;

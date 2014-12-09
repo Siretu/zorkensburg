@@ -11,6 +11,7 @@
 #include "container.h"
 #include <strings.h>
 #include <functional>
+#include "npc.h"
 
 typedef bool (*lambdas) (std::string);
 
@@ -42,9 +43,11 @@ string Game::serialize() const{
   string result = "";
   for (auto it = rooms.begin(); it != rooms.end(); ++it) {
     result += (*it)->serialize();
+    result += "\n";
   }
   for (auto it = doors.begin(); it != doors.end(); ++it) {
     result += (*it)->serialize();
+    result += "\n";
   }
   result += events;
   return result;
@@ -91,7 +94,7 @@ void Game::load(string args) {
   cout << "Reading from <"+args+">" << endl;
   std::ifstream loadfile;
   loadfile.open(args);
-  string line;
+  string line = "";
   if (loadfile.is_open()) {
     Room* r;
     Character* p = NULL;
@@ -141,6 +144,10 @@ void Game::load(string args) {
 	  events += line;
 	  events += "\n";
 	}
+      } else if(line.substr(0,4) == "NPC:") {
+	p = new NPC(line.substr(4),this,r);
+	r->addActor(p);
+	actors.push_back(p);
       }
     }
     loadfile.close();
@@ -165,16 +172,15 @@ bool Game::makeEvent(string s){
   string cond = content[3];
   cerr<< "Found event: " << cmd << " | " << operand << " | " << target << " | " << cond << endl;
 
-  //string cond = interval(s, i3 + 1, i4);
   Actor* op = NULL;
   Actor* tg = NULL;
    
   // Link string to actors
   for(auto it = actors.begin(); it != actors.end(); ++it) {
-    if ((*it)->id == operand) {
+    if ((*it)->getID() == operand) {
       op = *it;
     }
-    if ((*it)->id == target) {
+    if ((*it)->getID() == target) {
       tg = *it;
     }
   }
@@ -189,10 +195,10 @@ bool Game::makeEvent(string s){
     std::vector<string> arguments = split(*it,'#');
     string action = arguments[0];
     string message = arguments[1];
-    std::function<bool(string)> a = NULL;
+    std::function<bool(string,Character*)> a = NULL;
     Game* g = this;
     if (action == "LOCKMESSAGE") {
-      a = [tg,message,g,cond](string s) -> bool {
+      a = [tg,message,g,cond](string s, Character* c) -> bool {
 	if (tg->checkFlag(cond)) {
 	  Door* target = dynamic_cast<Door*>(tg);
 	  target->setLockedMessage(message);
@@ -201,7 +207,7 @@ bool Game::makeEvent(string s){
 	return false;
       };
     } else if (action == "SET") {
-      a = [tg,message,cond](string s) -> bool {
+      a = [tg,message,cond](string s, Character* c) -> bool {
 	if (tg->checkFlag(cond)) {
 	  tg->addFlag(message);
 	  return true;
@@ -209,7 +215,7 @@ bool Game::makeEvent(string s){
 	return false;
       };
     } else if (action == "MESSAGE") {
-      a = [tg,message,g,cond](string s) -> bool {
+      a = [tg,message,g,cond](string s, Character* c) -> bool {
 	if (tg->checkFlag(cond)) {
 	  g->push(message);
 	  return true;
@@ -217,7 +223,7 @@ bool Game::makeEvent(string s){
 	return false;
       };
     } else if(action == "UNSET"){
-      a = [tg,message,cond](string s) -> bool {
+      a = [tg,message,cond](string s, Character* c) -> bool {
 	if (tg->checkFlag(cond)) {
 	  tg->removeFlag(message);
 	  return true;
@@ -225,7 +231,7 @@ bool Game::makeEvent(string s){
 	return false;
       };
     } else if(action == "FAILMESSAGE") {
-      a = [tg,message,cond,g](string s) -> bool {
+      a = [tg,message,cond,g](string s, Character* c) -> bool {
 	if (!tg->checkFlag(cond)) {
 	  g->push(message);
 	}
@@ -262,4 +268,21 @@ std::vector<string> split(string n, char f) {
     } while(index != -1);
   }
   return result;
+}
+
+string join(std::vector<string> s, char on) {
+  string result = "";
+  if (s.size() > 0) {
+    for (auto it = s.begin();it != s.end();++it) {
+      result += on;
+      result += *it;
+    }
+    result.erase(0,1);
+  }
+  return result;
+}
+
+string join(std::unordered_set<string> s, char on)  {
+  std::vector<string> v (s.begin(), s.end());
+  return join(v,on);
 }

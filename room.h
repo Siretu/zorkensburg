@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <deque>
 #include <iostream>
+#include <functional>
 #include "actor.h"
 
 using std::string;
@@ -73,10 +74,10 @@ class Room {
   void addItem(Item* a) {items.insert(a);}
   void removeItem(Item* a) {items.erase(a);}
   
-  finder find(string s, int type, Actor* start = NULL) const;
-  
+  finder find(string s, int type, Actor* start = NULL) const;  
 
   string serialize() const;
+
 };
 
 #endif

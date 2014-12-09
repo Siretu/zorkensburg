@@ -33,16 +33,17 @@ string Container::print(int indent) const {
 
 string Container::serialize() const{
   string result = "CONTAINER:";
-  result += getNamesSerialize();
-  result += ";";
-  result += _desc;
+  string temp = Item::serialize();
+  temp.erase(0,5);
+  result += temp;
   result += "\n";
-  
+
   for (auto it = items.begin(); it != items.end();++it) {
-    result += (*it)->serialize();    
+    result += (*it)->serialize();
+    result += "\n";
   }
 
-  result += "ENDCONT\n";
+  result += "ENDCONT";
   return result;
 }
 

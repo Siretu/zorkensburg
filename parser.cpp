@@ -52,7 +52,7 @@ bool Parser::parse(std::string s) {
   if (it != verbs.end()) {
     (p->*verbs[command])(args);
     return true;
-  } else {
+  } else if (command.find_first_of('#') == -1){
     int space2 = args.find_first_of(" ");
     std::string target = args.substr(0,space2);
     finder f = (p->getLocation())->find(target,0);

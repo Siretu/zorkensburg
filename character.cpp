@@ -5,6 +5,8 @@
 #include "door.h"
 #include "game.h"
 
+using std::string;
+
 bool Character::enter(std::string dir) {
   Door* exit = location->getExit(dir);
   if (exit == NULL) {
@@ -15,10 +17,33 @@ bool Character::enter(std::string dir) {
       location->removeActor(this);
       location = newLocation;
       location->addActor(this);
+      if (checkFlag("playerishere")) {
+	removeFlag("playerishere");
+      }
+      triggerEnter(newLocation);
       return true;
     } else {
       g->push(exit->getLockedMessage());
       return true;
     }
   }  
+}
+
+
+void Character::triggerEnter(Room* r) {
+  doEvent("onEnter#"+r->getName(),"");
+}
+
+string Character::serialize() const{
+  string result = Actor::serialize();
+  result += "\n";
+
+  auto items = getInventory()->getItems();
+  for (auto it = items.begin(); it != items.end();++it) {
+    result += (*it)->serialize();
+    result += "\n";
+  }
+
+  result += "ENDCHAR";
+  return result;
 }
