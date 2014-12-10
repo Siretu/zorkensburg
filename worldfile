@@ -36,5 +36,5 @@ EVENT:douse;Lamp;Lamp;lightsource;FAILMESSAGE#It's already turned off!;MESSAGE#Y
 EVENT:onEnter#Cellar;PC;trapdoor;!shut;LOCKMESSAGE#The door is barred from the other side;MESSAGE#The door crashes shut, and you hear someone barring it.;SET#shut
 EVENT:open;trapdoor;trapdoor;shut;MESSAGE#You can't open the door. It is barred from the other side.
 EVENT:onAction#;Troll;Troll;playerishere&!active;SET#active
-EVENT:onAction#;Troll;Troll;playerishere&active;MESSAGE#Troll: I SMASH PUNY HUMAN
+EVENT:onAction#;Troll;Troll;playerishere&active;MESSAGE#There's a menacing troll standing in the middle of the room.;MESSAGE#;MESSAGE#Troll: I SMASH PUNY HUMAN
 EVENT:onAction#;Troll;Troll;!playerishere&active;MESSAGE#The troll followed you;FOLLOW#

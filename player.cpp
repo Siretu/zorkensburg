@@ -47,6 +47,7 @@ bool Player::drop(string s) {
     return false;
   } else {
     Item* i = dynamic_cast<Item*>(*f);
+    i->removeFlag("pickedup");
     if(i != NULL) {
       location->addItem(i);
       getInventory()->removeItem(i);
@@ -101,6 +102,7 @@ bool Player::pick_up(string args) {
     } else {
       location->removeItem(i);
     }
+    i->addFlag("pickedup");
     getInventory()->addItem(i);
   }
   g->push("Found "+(*f)->getName()+", picking up.");
