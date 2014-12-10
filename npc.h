@@ -9,6 +9,7 @@ class NPC : public Character {
  public:
   NPC(string data, Game* instance, Room* location) : Character(instance,location,data) {}
 
+  static const int C_USED_WORDS;
   
   virtual string serialize() const;
   virtual void death() {}

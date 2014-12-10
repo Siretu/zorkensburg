@@ -11,6 +11,8 @@ class Player : public Character {
  protected:
   Parser* p;
  public:
+  static const int C_USED_WORDS;
+
   Player(string s,Game* g,Room* r);
 
   void death();

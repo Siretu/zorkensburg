@@ -10,9 +10,10 @@ class Container : public Item {
   std::unordered_set<Item*> items;
 
  public:
-  Container(Game* g, std::string s) : Item(g,s){
-    
-  }
+  static const int C_USED_WORDS;
+  
+  Container(Game* g, std::string s);
+
   Container(Game* g) : Container(g,"Container;;Default Container;0"){};
   
   std::unordered_set<Item*> getItems() const {return items;}

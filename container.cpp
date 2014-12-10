@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unordered_set>
 #include "container.h"
+#include "item.h"
 
 using std::string;
 using std::cerr;
@@ -28,6 +29,11 @@ string Container::print(int indent) const {
     result += " (empty)";
   }
   return result;
+}
+
+const int Container::C_USED_WORDS = Item::C_USED_WORDS;
+Container::Container(Game* g, std::string s) : Item(g,s){
+    
 }
 
 

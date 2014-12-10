@@ -8,14 +8,12 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-Item::Item(Game* game, string data) : Actor(game,data){
-  auto d = split(data,';');
+const int Item::C_USED_WORDS = Actor::C_USED_WORDS + 1;
 
-  for (auto it = d.begin(); it != d.end(); ++it) {
-    cerr << "Found: " << *it << endl;
-  }
-  hidden = (d[3] == "1");
-  cerr << "Hidden complete. " << endl;
+Item::Item(Game* game, string data) : Actor(game,data) {
+  auto d = split(data,';');
+  int i = Actor::C_USED_WORDS;
+  hidden = (d[i] == "1");
 }
 
 

@@ -39,9 +39,7 @@ const int Character::C_USED_WORDS = Actor::C_USED_WORDS + 1;
 Character::Character(Game* instance, Room* l, std::string data) : Actor(instance,data), location(l) {
     _inventory = new Container(instance);
     int i = Actor::C_USED_WORDS;
-    cerr << "Inventory done, makingg health." << endl;
     health = stoi(split(data, ';')[i]);
-    cerr << "Health done. " << endl;
   }
 
 
@@ -52,7 +50,9 @@ void Character::triggerEnter(Room* r) {
 string Character::serialize() const{
   string result = Actor::serialize();
   result += ";";
-  result += health;
+  cerr << "Pre result: " << result << endl;
+  result += std::to_string(health);
+  cerr << "Post result: " << result << endl;
   result += "\n";
 
   auto items = getInventory()->getItems();

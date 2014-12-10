@@ -7,6 +7,8 @@ class Item : public Actor {
  protected:
  public:
   Item(Game* g, std::string data);
+
+  static const int C_USED_WORDS;
   
   bool action(){}
   std::string serialize() const;
