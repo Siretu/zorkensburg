@@ -3,6 +3,7 @@
 *.txt
 *log
 save*
+autosave
 
 
 # Compiled Object files

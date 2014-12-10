@@ -4,6 +4,7 @@
 #include "room.h"
 #include "door.h"
 #include "game.h"
+#include "player.h"
 
 using std::string;
 
@@ -17,9 +18,12 @@ bool Character::enter(std::string dir) {
       location->removeActor(this);
       location = newLocation;
       location->addActor(this);
-      if (checkFlag("playerishere")) {
+      if (g->player->getLocation() == location) {
+	addFlag("playerishere");
+      } else if(checkFlag("playerishere")){
 	removeFlag("playerishere");
       }
+
       triggerEnter(newLocation);
       return true;
     } else {
