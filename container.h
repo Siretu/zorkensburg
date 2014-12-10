@@ -13,7 +13,7 @@ class Container : public Item {
   Container(Game* g, std::string s) : Item(g,s){
     
   }
- Container(Game* g) : Container(g,"Container;Default container"){}
+  Container(Game* g) : Container(g,"Container;;Default Container;0"){};
   
   std::unordered_set<Item*> getItems() const {return items;}
   void addItem(Item* a) {items.insert(a);}
