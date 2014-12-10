@@ -243,9 +243,9 @@ bool Game::makeEvent(string s){
 	if(tg->checkFlag(cond)) {
 	  Character* target = dynamic_cast<Character*>(tg);
 	  Room* l = target->getLocation();
+	  Room* player_room = g->player->getLocation();
 	  for(auto kv : l->getExits()) {
 	    Room* connected_room = kv.second->getConnectedRoom(l);
-	    Room* player_room = g->player->getLocation();
 	    if (kv.second->getConnectedRoom(l) == g->player->getLocation()){
 	      target->enter(kv.first);
 	    }
