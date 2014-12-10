@@ -47,6 +47,7 @@ class Room {
   bool addExit(string s, Door* d);
   bool addExits(std::unordered_map<string,Door*> exits);
   Door* getExit(string s) const;
+  std::unordered_map<string,Door*> getExits() const {return exits;}
   
   void setDark(bool d) {dark = d;}
   bool isDark() const {

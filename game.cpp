@@ -238,6 +238,22 @@ bool Game::makeEvent(string s){
 	}
 	return false;
       };
+    } else if(action == "FOLLOW") {
+      a = [tg,cond,g](string s, Character* c) -> bool {
+	if(tg->checkFlag(cond)) {
+	  Character* target = dynamic_cast<Character*>(tg);
+	  Room* l = target->getLocation();
+	  for(auto kv : l->getExits()) {
+	    Room* connected_room = kv.second->getConnectedRoom(l);
+	    Room* player_room = g->player->getLocation();
+	    if (kv.second->getConnectedRoom(l) == g->player->getLocation()){
+	      target->enter(kv.first);
+	    }
+	    return true;
+	  }
+	}
+	return false;
+      };
     }
     if(a != NULL){
       op->addEvent(cmd,a);
