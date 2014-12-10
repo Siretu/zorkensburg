@@ -12,7 +12,11 @@ using std::string;
 using std::cerr;
 using std::endl;
 
+//number of ';'-separated words used by the constructor
+const int Actor::C_USED_WORDS = 3;
+
 Actor::Actor(Game* instance, string data) : g(instance){
+  cerr << "Constructing actor from: "<<  data << endl;
   std::vector<string> d = split(data,';');
   auto d1 = split(d[0],'#');
   auto d2 = split(d[1],'#');

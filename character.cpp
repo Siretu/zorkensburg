@@ -26,8 +26,19 @@ bool Character::enter(std::string dir) {
       g->push(exit->getLockedMessage());
       return true;
     }
-  }  
+  }
 }
+
+//number of ';'-separated words used by the constructor
+const int Character::C_USED_WORDS = Actor::C_USED_WORDS + 1;
+
+Character::Character(Game* instance, Room* l, std::string data) : Actor(instance,data), location(l) {
+    _inventory = new Container(instance);
+    int i = Actor::C_USED_WORDS;
+    cerr << "Inventory done, makingg health." << endl;
+    health = stoi(split(data, ';')[i]);
+    cerr << "Health done. " << endl;
+  }
 
 
 void Character::triggerEnter(Room* r) {
@@ -36,6 +47,8 @@ void Character::triggerEnter(Room* r) {
 
 string Character::serialize() const{
   string result = Actor::serialize();
+  result += ";";
+  result += health;
   result += "\n";
 
   auto items = getInventory()->getItems();

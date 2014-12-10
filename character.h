@@ -16,10 +16,8 @@ class Character : public Actor{
   int health;
 
  public:
- Character(Game* instance, Room* l, std::string data) : Actor(instance,data), location(l) {
-    _inventory = new Container(instance,"Container;;Default Container;0");
-    // TODO: Fix health?
-  }
+  static const int C_USED_WORDS;
+  Character(Game* instance, Room* l, std::string data);
 
   virtual void death() = 0;
 

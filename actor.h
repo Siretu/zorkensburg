@@ -25,6 +25,7 @@ class Actor {
  public:
   bool hidden = false;
   Game* g;
+  static const int C_USED_WORDS;
 
   Actor(Game* instance, string data);
 

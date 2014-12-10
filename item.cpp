@@ -10,7 +10,12 @@ using std::string;
 
 Item::Item(Game* game, string data) : Actor(game,data){
   auto d = split(data,';');
+
+  for (auto it = d.begin(); it != d.end(); ++it) {
+    cerr << "Found: " << *it << endl;
+  }
   hidden = (d[3] == "1");
+  cerr << "Hidden complete. " << endl;
 }
 
 
