@@ -14,6 +14,6 @@ string NPC::serialize() const {
 
 void NPC::death() {
   g->push("The " + getName() + " dies and instantly turns to dust. Leaving no treasure behind");
-  g->removeActor(this);
   location->removeActor(this);
+  g->removeActor(this);
 }
