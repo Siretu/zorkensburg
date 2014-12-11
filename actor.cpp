@@ -24,6 +24,9 @@ Actor::Actor(Game* instance, string data) : g(instance){
   _desc = d[2];
 }
 
+Actor::~Actor(){
+}
+
 bool Actor::action() {
   doEvent("onAction#","");
 }
@@ -38,8 +41,9 @@ std::string Actor::serialize() const {
   return result;
 }
 
-std::unordered_set<Actor*>* Actor::getContained() const {
-  return new std::unordered_set<Actor*>;
+std::unordered_set<Actor*> Actor::getContained() const {
+  std::unordered_set<Actor*> r;
+  return r;//new std::unordered_set<Actor*>;
 }
 
 bool Actor::removeItem(Actor*) {return false;}

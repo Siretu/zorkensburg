@@ -28,12 +28,13 @@ class Actor {
   static const int C_USED_WORDS;
 
   Actor(Game* instance, string data);
+  virtual ~Actor();
 
   virtual bool action();
   
   virtual std::string serialize() const;
 
-  virtual std::unordered_set<Actor*>* getContained() const;
+  virtual std::unordered_set<Actor*> getContained() const;
   
   virtual bool removeItem(Actor*);
 

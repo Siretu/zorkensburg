@@ -20,6 +20,8 @@ class Character : public Actor{
   static const int C_USED_WORDS;
   Character(Game* instance, Room* l, std::string data);
 
+  ~Character();
+
   virtual void death() = 0;
 
   virtual bool drop(std::string args) = 0;
@@ -35,7 +37,7 @@ class Character : public Actor{
   
   Container* getInventory() const {return _inventory;}
 
-  virtual std::unordered_set<Actor*>* getContained() const {return _inventory->getContained();}
+  virtual std::unordered_set<Actor*> getContained() const {return _inventory->getContained();}
 
   void triggerEnter(Room* l);
   
