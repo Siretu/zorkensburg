@@ -35,7 +35,7 @@ bool Player::action() {
     }
     cout << "> ";
     std::getline(cin,input);
-    
+    removeFlag("looking");
   } while (!p->parse(input));
   return true;
 }
@@ -73,6 +73,7 @@ bool Player::go(string args) {
     if(!oldLocation->isDark() && location->isDark()) {
       g->push("You have moved into a dark place.\n\n");
     }
+    addFlag("looking");
     g->push(location->getDescription());
   }
 }
@@ -111,6 +112,7 @@ bool Player::pick_up(string args) {
 }
 
 bool Player::look(string args) {
+  addFlag("looking");
   g->push("You look around");
   g->push(location->getDescription());
 }
