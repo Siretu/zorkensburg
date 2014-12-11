@@ -190,6 +190,7 @@ bool Game::makeEvent(string s){
   std::vector<string> actions (content.begin()+4,content.end());
 
   for (auto it = actions.begin(); it != actions.end(); ++it) {
+    cerr << "Got action: " << *it << endl;
     std::vector<string> arguments = split(*it,'#');
     string action = arguments[0];
     string message = arguments[1];
@@ -247,6 +248,55 @@ bool Game::makeEvent(string s){
 	      target->enter(kv.first);
 	    }
 	    return true;
+	  }
+	}
+	return false;
+      };
+    } else if(action == "QUIT") {
+      a = [tg,cond,g](string s, Character* c) -> bool {
+	if(tg->checkFlag(cond)) {
+	  g->doQuit();
+	}
+      };
+    } else if(action == "ATTACK") {
+      a = [tg,cond,g](string s, Character* c) -> bool {
+	if(tg->checkFlag(cond)) {
+	  g->push("The " + tg->getName() + " attacks you and hits you in the side.");
+	  g->player->damageHealth(35);
+	}
+      };
+    } else if(action == "CREATEITEM") {
+      auto found = s.find("CREATEITEM#");
+      if (found != string::npos) {
+	string itemdef = s.substr(found + 11);
+	cerr << "Found item definiton: " << itemdef << endl;
+	a = [tg,cond,g,itemdef](string s, Character* c) -> bool {
+	  if(tg->checkFlag(cond)) {
+	    Item* i = new Item(g,itemdef);
+	    Character* c = dynamic_cast<Character*>(tg);
+	    c->getInventory()->addItem(i);
+	    cerr << "Baked bread(" << i << ")" << endl;
+	    return true;
+	  }
+	  return false;
+	};
+	op->addEvent(cmd,a);
+	break;
+      }
+    } else if(action == "DESTROYITEM") {
+      a = [tg,cond,g,operand](string s, Character* c) -> bool {
+	Character* foo = dynamic_cast<Character*>(tg);
+	finder f = foo->getLocation()->find(operand,2,foo);
+	if (f.findNext() != NULL) {
+	  // This will cause problems if you destroy an item in a container carried by the PC
+	  Item* i = dynamic_cast<Item*>(*f);
+	  if (i != NULL) {
+	    g->push("You consume the " + i->getName()); // Ugly hack
+	    foo->getInventory()->removeItem(i);
+	    delete i;
+	    return true;
+	  } else {
+	    return false;
 	  }
 	}
 	return false;

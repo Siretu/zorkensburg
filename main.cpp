@@ -26,4 +26,5 @@ int main() {
       curr->action();
     }
   }
+  cout << g.flush() << endl;
 }

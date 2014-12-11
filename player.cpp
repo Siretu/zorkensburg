@@ -27,7 +27,10 @@ Player::~Player(){
 }
 
 // TODO: Implement death
-void Player::death() {}
+void Player::death() {
+  g->push("You die.");
+  g->doQuit();
+}
 
 bool Player::action() {
   string input;
