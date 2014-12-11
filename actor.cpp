@@ -16,16 +16,15 @@ using std::endl;
 const int Actor::C_USED_WORDS = 3;
 
 Actor::Actor(Game* instance, string data) : g(instance){
-  cerr << "Constructing actor from: "<<  data << endl;
   std::vector<string> d = split(data,';');
   auto d1 = split(d[0],'#');
   auto d2 = split(d[1],'#');
   addNames(d1);
   addFlags(d2);
-  cerr << "Parsing desc" << endl;
-  cerr << data << endl;
   _desc = d[2];
-  cerr << "Done parsing desc" << endl;
+}
+
+Actor::~Actor(){
 }
 
 bool Actor::action() {
@@ -42,8 +41,9 @@ std::string Actor::serialize() const {
   return result;
 }
 
-std::unordered_set<Actor*>* Actor::getContained() const {
-  return new std::unordered_set<Actor*>;
+std::unordered_set<Actor*> Actor::getContained() const {
+  std::unordered_set<Actor*> r;
+  return r;//new std::unordered_set<Actor*>;
 }
 
 bool Actor::removeItem(Actor*) {return false;}

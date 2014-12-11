@@ -55,8 +55,24 @@ string Game::serialize() const{
 }
 
 Game::~Game(){
-  cerr << "auto saving on close" << endl;
+  cout << "Closing program, saving game state." << endl;
   save("autosave");
+  clearold();
+}
+
+void Game::clearold(){
+  events = "";
+  for(auto it = rooms.begin(); it != rooms.end(); ++it) {
+    delete *it;
+  }
+  for(auto it = doors.begin(); it != doors.end(); ++it) {
+    delete *it;
+  }
+  //Antagande: Samtliga actors är i ett rum, eller ägda av en actor
+  //i ett rum. Rummen ansvarar för att delete:a sina "ägda" actors.
+  rooms.clear();
+  doors.clear();
+  actors.clear();  
 }
 
 void Game::save(string args) {
@@ -68,20 +84,6 @@ void Game::save(string args) {
   savefile << serialize();
   savefile.close();
   push("Saved as '" + args + "'");
-}
-
-void Game::clearold(){
-  events = "";
-  for(auto it = rooms.begin(); it != rooms.end(); ++it) {
-    delete *it;
-  }
-  for(auto it = doors.begin(); it != doors.end(); ++it) {
-    delete *it;
-  }
-  rooms.clear();
-  doors.clear();
-  actors.clear();
-  
 }
 
 void Game::load(string args) {
@@ -171,7 +173,6 @@ bool Game::makeEvent(string s){
   string operand = content[1];
   string target = content[2];
   string cond = content[3];
-  cerr<< "Found event: " << cmd << " | " << operand << " | " << target << " | " << cond << endl;
 
   Actor* op = NULL;
   Actor* tg = NULL;

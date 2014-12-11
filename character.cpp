@@ -5,8 +5,11 @@
 #include "door.h"
 #include "game.h"
 #include "player.h"
+#include "container.h"
 
 using std::string;
+using std::cerr;
+using std::endl;
 
 bool Character::enter(std::string dir) {
   Door* exit = location->getExit(dir);
@@ -23,7 +26,6 @@ bool Character::enter(std::string dir) {
       } else if(checkFlag("playerishere")){
 	removeFlag("playerishere");
       }
-
       triggerEnter(newLocation);
       return true;
     } else {
@@ -42,6 +44,12 @@ Character::Character(Game* instance, Room* l, std::string data) : Actor(instance
     health = stoi(split(data, ';')[i]);
   }
 
+Character::~Character(){
+  /*  for(auto it = _inventory.begin(); it != _inventory.end(); ++it){
+    delete *it;
+    }*/
+  delete _inventory;
+}
 
 void Character::triggerEnter(Room* r) {
   doEvent("onEnter#"+r->getName(),"");

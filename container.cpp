@@ -36,6 +36,11 @@ Container::Container(Game* g, std::string s) : Item(g,s){
     
 }
 
+Container::~Container(){
+  for(auto it = items.begin(); it != items.end(); ++it){
+    delete *it;
+  }
+}
 
 string Container::serialize() const{
   string result = "CONTAINER:";
@@ -53,10 +58,10 @@ string Container::serialize() const{
   return result;
 }
 
-std::unordered_set<Actor*>* Container::getContained() const {
-  std::unordered_set<Actor*>* result = new std::unordered_set<Actor*>;
+std::unordered_set<Actor*> Container::getContained() const {
+  std::unordered_set<Actor*> result;
   for (auto it = items.begin();it != items.end();++it){
-    result->insert(*it);
+    result.insert(*it);
   }
   return result;
 }

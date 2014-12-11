@@ -7,6 +7,8 @@
 #include "door.h"
 
 using std::string;
+using std::cerr;
+using std::endl;
 
 Room::Room(string data, Game* game) {
   auto d = split(data,';');
@@ -18,7 +20,12 @@ Room::Room(string data, Game* game) {
 }
 
 Room::~Room() {
-  std::cerr << "Destroyed room: " << name << std::endl;
+  for(auto it = actors.begin(); it != actors.end(); ++it){
+    delete *it;
+  }
+  for(auto it = items.begin(); it != items.end(); ++it){
+    delete *it;
+  }
 }
 
 Room::Room(string n, string d) : name(n), description(d) {}
@@ -30,10 +37,14 @@ bool Room::addExit(string s, Door* d) {
 
 Door* Room::getExit(string s) const{
   std::unordered_map<string,string> short_names;
-  short_names["west"] = "w";
   short_names["east"] = "e";
+  short_names["northeast"] = "ne";
   short_names["north"] = "n";
+  short_names["northwest"] = "nw";
+  short_names["west"] = "w";
+  short_names["southwest"] = "sw";
   short_names["south"] = "s";
+  short_names["southeast"] = "se";
   short_names["up"] = "u";
   short_names["down"] = "d";
   auto it2 = short_names.find(s);
@@ -133,7 +144,7 @@ Actor* finder::findNext(){
     if(visited.count(current)) continue;
     if(type != 1) {
       auto temp = current->getContained();
-      for(auto it = temp->begin();it != temp->end();++it){
+      for(auto it = temp.begin();it != temp.end();++it){
 	if ((*it)->hidden /*&& type != 0*/) continue;
 	bfsq.push_back(*it);
 	trackback[*it] = current;

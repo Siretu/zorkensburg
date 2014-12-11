@@ -22,6 +22,10 @@ Player::Player(string data, Game* instance, Room* r) : Character(instance,r,data
   p = new Parser(this,instance);
 }
 
+Player::~Player(){
+  delete p;
+}
+
 // TODO: Implement death
 void Player::death() {}
 

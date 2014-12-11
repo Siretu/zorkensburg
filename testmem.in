@@ -1,0 +1,23 @@
+save
+save tmpsave
+load
+go e
+open window
+go in
+take water
+drop water
+take bottle
+close window
+go w
+pull rug
+take lantern
+light lantern
+open trapdoor
+go d
+drop lantern
+go n
+go s
+save
+load tmpsave
+go e
+load

@@ -20,6 +20,8 @@ class Door : public Actor {
   string d1;
   string d2;
 
+  virtual ~Door();
+
   Door(string data, std::unordered_map<string,Room*>* rooms, Game* g);
 
   Room* getConnectedRoom(Room* current) const;
@@ -28,11 +30,11 @@ class Door : public Actor {
 
   string getLockedMessage() const;
   void setLockedMessage(string s);
-
+  /*
   virtual std::unordered_set<Actor*>* getContained() const {
     return new std::unordered_set<Actor*>;
   }
-
+  */
   virtual bool action(){}
 
 };

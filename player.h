@@ -15,6 +15,8 @@ class Player : public Character {
 
   Player(string s,Game* g,Room* r);
 
+  ~Player();
+  
   void death();
   bool action();
 
