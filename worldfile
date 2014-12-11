@@ -1,3 +1,4 @@
+INTRODUCTION:You've been sent on a mission to figure out what's haunting a little house on the prarie. There's been multiple reports about monster activity in the area. Use the "go" command with a direction, such as "go north" to move between different areas. There are many more commands to discover so use your creativity!
 ROOM:West field;You are in an open field west of a big white house with a boarded front door.;0
 CONTAINER:mailbox;;I see nothing special about the mailbox;0
 ITEM:leaflet#letter;;It contains game instructions. It doesn't make sense to you.;0
@@ -13,6 +14,7 @@ ENDCONT
 ITEM:Brown sack#sack#bag;;The elongated brown sack sits on the table, smelling of hot peppers.;0
 ROOM:Living room;You are in the living room. There is a door to the east. To the west is a wooden door with strange gothic lettering, which appears to be nailed shut. In the center of the room is a large oriental rug. There is a trophy case here. On hooks above the mantlepiece hangs an elvish sword of great antiquity. A battery-powered brass lantern is on the trophy case.;0
 ITEM:Lantern#Lamp#Brass lantern;;A battery-powered brass lantern;0
+ITEM:Elvish Sword#Sword#Antique sword#Weapon;;It's an elvish sword of great antiquity;0
 ITEM:Rug#carpet;;Foo;1
 ROOM:Cellar;You are in a dark and damp cellar with a narrow passageway leading east, and a crawlway to the south. To the west is the bottom of a steep metal ramp which is unclimbable.;1
 ROOM:nowhere;You are in a grues' nest.;1

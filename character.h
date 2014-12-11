@@ -1,6 +1,7 @@
 #ifndef CHARACTER_GUARD
 #define CHARACTER_GUARD
 
+#include <algorithm>
 #include <string>
 #include <unordered_set>
 #include "actor.h"
@@ -37,5 +38,14 @@ class Character : public Actor{
   virtual std::unordered_set<Actor*>* getContained() const {return _inventory->getContained();}
 
   void triggerEnter(Room* l);
+  
+  int getHealth() {return health;}
+  void setHealth(int h) {health = h;}
+  void damageHealth(int i) {
+    health = std::max(0,health-i);
+    if (health <= 0) {
+      death();
+    }
+  }
 };
 #endif

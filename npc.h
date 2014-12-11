@@ -12,7 +12,7 @@ class NPC : public Character {
   static const int C_USED_WORDS;
   
   virtual string serialize() const;
-  virtual void death() {}
+  virtual void death();
   virtual bool drop(std::string args) {}
   virtual bool go(std::string args) {}
   virtual bool attack(std::string args) {}

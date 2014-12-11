@@ -1,5 +1,6 @@
 #include <string>
 #include "npc.h"
+#include "room.h"
 
 using std::string;
 
@@ -9,4 +10,10 @@ string NPC::serialize() const {
   string result = "NPC:";
   result += Character::serialize();
   return result;
+}
+
+void NPC::death() {
+  g->push("The " + getName() + " dies and instantly turns to dust. Leaving no treasure behind");
+  g->removeActor(this);
+  location->removeActor(this);
 }

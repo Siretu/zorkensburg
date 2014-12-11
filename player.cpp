@@ -79,7 +79,29 @@ bool Player::go(string args) {
 }
 
 bool Player::attack(string args) {
-  g->push("You attack nothing!");
+  std::unordered_set<Item*> is = getInventory()->getItems();
+  Item* weapon = NULL;
+  for (auto it = is.begin();it != is.end();++it){
+    if ((*it)->hasName("weapon")) {
+      weapon = *it;
+    }
+  }
+  if (weapon == NULL) {
+    g->push("You have no weapon!");
+    return false;
+  } else {
+    finder f = location->find(args,1);
+    if(f.findNext() != NULL) {
+      Character* c = dynamic_cast<Character*>(*f);
+      if (c != NULL) {
+	g->push("Found " + c->getName() + " to attack.");
+	g->push("You attack the " +c->getName());
+	c->damageHealth(5);
+      }
+    }
+  }
+
+
   return false;
 }
 bool Player::pick_up(string args) {

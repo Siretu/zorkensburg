@@ -41,7 +41,9 @@ bool strcomp(string a, string b){
 
 
 string Game::serialize() const{
-  string result = "";
+  string result = "INTRODUCTION:";
+  result += introduction;
+  result += "\n";
   for (auto it = rooms.begin(); it != rooms.end(); ++it) {
     result += (*it)->serialize();
     result += "\n";
@@ -149,6 +151,9 @@ void Game::load(string args) {
 	p = new NPC(line.substr(4),this,r);
 	r->addActor(p);
 	actors.push_back(p);
+      } else if(line.substr(0,13) == "INTRODUCTION:") {
+	introduction = line.substr(13);
+	push(line.substr(13) + "\n");
       }
     }
     loadfile.close();
@@ -158,15 +163,6 @@ void Game::load(string args) {
 
 bool Game::makeEvent(string s){
   std::vector<string> content = split(s,';');
-  /*int i1 = s.find_first_of(";");
-  int i2 = s.find_first_of(";", i1 + 1);
-  int i3 = s.find_first_of(";", i2 + 1);
-  int i4 = s.find_first_of(";", i3 + 1);
-
-  string cmd = s.substr(0,i1);
-  string operand = s.substr(i1 + 1, i2 - i1 - 1);
-  string target = s.substr(i2 + 1, i3 - i2 - 1);
-  string cond = s.substr(i3 + 1, i4 - i3 - 1);*/
   string cmd = content[0];
   string operand = content[1];
   string target = content[2];
@@ -285,6 +281,15 @@ std::vector<string> split(string n, char f) {
   }
   return result;
 }
+
+void Game::removeActor(Actor* a){
+  auto it = std::find(actors.begin(),actors.end(),a);
+  if (it != actors.end()) {
+    actors.erase(it);
+    delete a;
+  }
+}
+
 
 string join(std::vector<string> s, char on) {
   string result = "";

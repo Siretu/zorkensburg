@@ -23,6 +23,7 @@ class Game {
   std::vector<Actor*> actors;
   std::vector<Room*> rooms;
   std::unordered_set<Door*> doors;
+  string introduction = "";
   string events = "";
  public:
 
@@ -52,6 +53,7 @@ class Game {
   std::vector<Actor*> getActors() const{
     return actors;
   }
+  void removeActor(Actor* a);
 
   void addActor(Actor* a) {
     actors.push_back(a);
