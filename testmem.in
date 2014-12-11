@@ -11,13 +11,20 @@ close window
 go w
 pull rug
 take lantern
+take sword
 light lantern
 open trapdoor
 go d
 drop lantern
 go n
 go s
+attack troll
+go u
+go d
+attack troll
+look
 save
 load tmpsave
 go e
 load
+look
