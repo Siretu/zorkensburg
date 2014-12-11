@@ -16,16 +16,12 @@ using std::endl;
 const int Actor::C_USED_WORDS = 3;
 
 Actor::Actor(Game* instance, string data) : g(instance){
-  cerr << "Constructing actor from: "<<  data << endl;
   std::vector<string> d = split(data,';');
   auto d1 = split(d[0],'#');
   auto d2 = split(d[1],'#');
   addNames(d1);
   addFlags(d2);
-  cerr << "Parsing desc" << endl;
-  cerr << data << endl;
   _desc = d[2];
-  cerr << "Done parsing desc" << endl;
 }
 
 bool Actor::action() {

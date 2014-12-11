@@ -57,7 +57,6 @@ bool Parser::parse(std::string s) {
     std::string target = args.substr(0,space2);
     finder f = (p->getLocation())->find(target,0);
     while(f.findNext() != NULL) {
-      cerr << "Found target: " << (*f)->getName() << endl;
       if((*f)->doEvent(command,args)) {
 	return true;
       }

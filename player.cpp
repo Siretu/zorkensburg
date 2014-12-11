@@ -78,7 +78,10 @@ bool Player::go(string args) {
   }
 }
 
-bool Player::attack(string args) {}
+bool Player::attack(string args) {
+  g->push("You attack nothing!");
+  return false;
+}
 bool Player::pick_up(string args) {
   finder f = location->find(args, 2);
   if(f.findNext() == NULL){

@@ -171,7 +171,6 @@ bool Game::makeEvent(string s){
   string operand = content[1];
   string target = content[2];
   string cond = content[3];
-  cerr<< "Found event: " << cmd << " | " << operand << " | " << target << " | " << cond << endl;
 
   Actor* op = NULL;
   Actor* tg = NULL;

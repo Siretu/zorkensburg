@@ -50,9 +50,7 @@ void Character::triggerEnter(Room* r) {
 string Character::serialize() const{
   string result = Actor::serialize();
   result += ";";
-  cerr << "Pre result: " << result << endl;
   result += std::to_string(health);
-  cerr << "Post result: " << result << endl;
   result += "\n";
 
   auto items = getInventory()->getItems();

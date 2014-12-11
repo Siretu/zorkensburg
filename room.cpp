@@ -18,7 +18,7 @@ Room::Room(string data, Game* game) {
 }
 
 Room::~Room() {
-  std::cerr << "Destroyed room: " << name << std::endl;
+  //std::cerr << "Destroyed room: " << name << std::endl;
 }
 
 Room::Room(string n, string d) : name(n), description(d) {}
