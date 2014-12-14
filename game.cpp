@@ -53,6 +53,8 @@ string Game::serialize() const{
     result += "\n";
   }
   result += events;
+  result += "\n";
+  result += defines_string();
   return result;
 }
 
@@ -156,6 +158,11 @@ void Game::load(string args) {
       } else if(line.substr(0,13) == "INTRODUCTION:") {
 	introduction = line.substr(13);
 	push(line.substr(13) + "\n");
+      } else if(line.substr(0,7) == "DEFINE:"){
+        auto spl = split(line.substr(7), ';');
+	definitions[spl[0]] = spl[1];
+	def_str += line;
+	def_str += "\n";
       }
     }
     loadfile.close();
@@ -190,7 +197,7 @@ bool Game::makeEvent(string s){
   std::vector<string> actions (content.begin()+4,content.end());
 
   for (auto it = actions.begin(); it != actions.end(); ++it) {
-    cerr << "Got action: " << *it << endl;
+    //cerr << "Got action: " << *it << endl;
     std::vector<string> arguments = split(*it,'#');
     string action = arguments[0];
     string message = arguments[1];
@@ -269,13 +276,11 @@ bool Game::makeEvent(string s){
       auto found = s.find("CREATEITEM#");
       if (found != string::npos) {
 	string itemdef = s.substr(found + 11);
-	cerr << "Found item definiton: " << itemdef << endl;
 	a = [tg,cond,g,itemdef](string s, Character* c) -> bool {
 	  if(tg->checkFlag(cond)) {
 	    Item* i = new Item(g,itemdef);
-	    Character* c = dynamic_cast<Character*>(tg);
-	    c->getInventory()->addItem(i);
-	    cerr << "Baked bread(" << i << ")" << endl;
+	    //Character* c = dynamic_cast<Character*>(tg);
+	    g->player->getInventory()->addItem(i);
 	    return true;
 	  }
 	  return false;
@@ -284,23 +289,63 @@ bool Game::makeEvent(string s){
 	break;
       }
     } else if(action == "DESTROYITEM") {
-      a = [tg,cond,g,operand](string s, Character* c) -> bool {
+      /*a = [tg,cond,g,operand](string s, Character* c) -> bool {
 	Character* foo = dynamic_cast<Character*>(tg);
-	finder f = foo->getLocation()->find(operand,2,foo);
+	finder f = foo->getLocation()->find(operand,2);
 	if (f.findNext() != NULL) {
+	  cerr << "Found internal drink" << endl;
 	  // This will cause problems if you destroy an item in a container carried by the PC
 	  Item* i = dynamic_cast<Item*>(*f);
 	  if (i != NULL) {
 	    g->push("You consume the " + i->getName()); // Ugly hack
-	    foo->getInventory()->removeItem(i);
+	    Character* con = dynamic_cast<Character*>(*f);
+	    if (con != NULL) {
+	      con->getInventory()->removeItem(i);
+	    } else {
+	      
+	    }
 	    delete i;
 	    return true;
-	  } else {
-	    return false;
 	  }
-	}
+	} else {
+	  cerr << "Looking in room" << endl;
+	  std::unordered_set<Item*> inv = foo->getLocation()->getItems();
+	  for (auto it = inv.begin();it != inv.end();++it) {
+	    cerr << "Looking at " << (*it)->getName() << endl;
+	    cerr << "Looking for " << operand << endl;
+	    Item* i = *it;
+	    if (i->hasName(operand)) {
+	      cerr << "Removing " << i->getName() << " from " << foo->getLocation()->getName() << endl;
+	      foo->getLocation()->removeItem(i);
+	      cerr << "Done removing" << endl;
+	      delete i;
+	      cerr << "Done deleting" << endl;
+	      return true;
+	    } else {
+	      cerr << "Didn't match" << endl;
+	    }
+	  }
+	  }
+	g->push("There's no " + operand + " to consume.");
 	return false;
-      };
+	};*/
+    a = [tg,cond,g,operand](string s, Character* c) -> bool {
+      Character* foo = dynamic_cast<Character*>(tg);
+      finder f = foo->getLocation()->find(operand,2,foo);
+      if (f.findNext() != NULL) {
+	// This will cause problems if you destroy an item in a container carried by the PC
+	Item* i = dynamic_cast<Item*>(*f);
+	if (i != NULL) {
+	  g->push("You consume the " + i->getName()); // Ugly hack
+	  foo->getInventory()->removeItem(i);
+	  delete i;
+	  return true;
+	} else {
+	  return false;
+	}
+      }
+      return false;
+    };
     }
     if(a != NULL){
       op->addEvent(cmd,a);

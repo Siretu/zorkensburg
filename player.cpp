@@ -26,7 +26,6 @@ Player::~Player(){
   delete p;
 }
 
-// TODO: Implement death
 void Player::death() {
   g->push("You die.");
   g->doQuit();
@@ -80,6 +79,9 @@ bool Player::go(string args) {
     if(!oldLocation->isDark() && location->isDark()) {
       g->push("You have moved into a dark place.\n\n");
     }
+    if (g->status() != "") {
+      return true;
+    }
     addFlag("looking");
     g->push(location->getDescription());
   }
@@ -128,8 +130,16 @@ bool Player::pick_up(string args) {
     if(containing != NULL) {
       if (!containing->removeItem(i)) {
 	Container* container = dynamic_cast<Container*>(containing);
+	
 	if(container != NULL) {
+	  if (container->getName() == "Container") {
+	    g->push("Didn't find "+args+" to pick up.");
+	    return false;
+	  }
 	  container->removeItem(i);
+	} else {
+	  g->push("Didn't find "+args+" to pick up.");
+	  return false;
 	}
       }
     } else {

@@ -112,9 +112,13 @@ bool Actor::checkFlag(string s) const{
     string temp = *it;
     if (temp[0] == '!') {
       temp = temp.substr(1);
-      if (flags.find(temp) != flags.end()) return false;
+      if (flags.find(temp) != flags.end()) {
+	return false;
+      }
     } else {
-      if (flags.find(temp) == flags.end()) return false;
+      if (flags.find(temp) == flags.end()) {
+	return false;
+      }
     }
   }
   return true;
@@ -129,4 +133,5 @@ string Actor::getID() const {
     return "";
   }
 }
+
 

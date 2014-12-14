@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <unordered_set>
+#include <unordered_map>
 
 class Player; // Forward Declaration
 class Actor; // Forward Declaration
@@ -25,8 +26,9 @@ class Game {
   std::unordered_set<Door*> doors;
   string introduction = "";
   string events = "";
+  string def_str = "";
  public:
-
+  std::unordered_map<string,string> definitions;
   Player* player;
 
   Game();
@@ -43,6 +45,9 @@ class Game {
     buffer += output;
     buffer += "\n";
   }
+
+  string defines_string() const {return def_str;}
+
 
   void doQuit(){_status="quit";}
   void setStatus(string s) {_status = s;}

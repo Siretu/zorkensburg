@@ -1,35 +1,47 @@
-INTRODUCTION:You've been sent on a mission to figure out what's haunting a little house on the prarie. There's been multiple reports about monster activity in the area. Use the "go" command with a direction, such as "go north" to move between different areas. There are many more commands to discover so use your creativity!
-ROOM:West field;You are in an open field west of a big white house with a boarded front door.;0
+INTRODUCTION:You've been sent on a mission to figure out what's haunting a little house on the prarie and retrieve the lost treasure of Atlantis and bring it back here. Use the "go" command with a direction, such as "go north" to move between different areas. There are many more commands to discover so use your creativity!
+ROOM:West field;You are in an open field west of a big white house with a boarded front door. You see a path going north, around to the north side of the house;0
+PLAYER:PC;flag;desc;100
+ENDCHAR
 CONTAINER:mailbox;;I see nothing special about the mailbox;0
 ITEM:leaflet#letter;;It contains game instructions. It doesn't make sense to you.;0
 ENDCONT
-ROOM:North of house;You are facing the north side of a white house. There is no door here, and all the windows are barred.;0
-PLAYER:PC;flag;desc;100
-ENDCHAR
+ROOM:South of house;You are facing the south side of a white house. There is no door here, and all the windows are barred.;0
+ROOM:North of house;You are facing the north side of a white house. There is no door here, and all the windows are barred. There are paths leading west and east to the respective sides of the house.;0
 ROOM:East of house;You are behind the white house. In one corner of the house there is a window which is slightly ajar.;0
 ROOM:Kitchen;You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. It seems like the perfect place to bake some bread. A passage leads to the west. To the east is a small window. ;0
-CONTAINER:Glass bottle#bottle;;A clear glass bottle is here;0
 ITEM:Water;;A quantity of water.;0
+CONTAINER:Brown sack#sack#bag;;The elongated brown sack, smelling of hot peppers.;0
+ITEM:Potato;;A brown round potato.;0
 ENDCONT
 ITEM:bread;;;1
-ITEM:Brown sack#sack#bag;;The elongated brown sack sits on the table, smelling of hot peppers.;0
-ROOM:Living room;You are in the living room. There is a door to the east. To the west is a wooden door with strange gothic lettering, which appears to be nailed shut. In the center of the room is a large oriental rug. There is a trophy case here. On hooks above the mantlepiece hangs an elvish sword of great antiquity. A battery-powered brass lantern is on the trophy case.;0
+ROOM:Living room;You are in the living room. There is a door to the east. To the west is a wooden door with strange gothic lettering, which appears to be nailed shut. In the center of the room is a large oriental rug. There is a trophy case here.;0
 ITEM:Lantern#Lamp#Brass lantern;;A battery-powered brass lantern;0
 ITEM:Elvish Sword#Sword#Antique sword#Weapon;;It's an elvish sword of great antiquity;0
-ITEM:Rug#carpet;;Foo;1
-ROOM:Cellar;You are in a dark and damp cellar with a narrow passageway leading east, and a crawlway to the south. To the west is the bottom of a steep metal ramp which is unclimbable.;1
+ITEM:Rug#carpet#oriental rug;;There is something odd about this carpet. It looks uneven as if there was something underneath it.;1
+ROOM:Cellar;You are in a dark and damp cellar with a narrow passageway leading north. To the west is the bottom of a steep metal ramp which is unclimbable.;1
 ROOM:nowhere;You are in a grues' nest.;1
-ROOM:Troll's room;This is a small room with passages off in all directions. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.;1
-NPC:Troll;flag;desc;10
+ROOM:Troll's room;This is a small room with passages off in all directions. Bloodstains and deep scratches (perhaps made by an axe) mar the walls. There's a button and a lever here. Maybe if you pulled the lever after pushing the button...;1
+ITEM:Button;;Just a normal button;1
+ITEM:Lever;;Just a normal level;1
+NPC:Troll;;A very mean looking troll. You better watch out.;10
 ENDCHAR
+DOOR:;;;West field;South of house;s;w;
+DOOR:;;;South of house;East of house;e;s;
+DOOR:;;;West field;nowhere;w;e;The road to the west leads to a forest that looks mean and scary. You don't want to go there.
+DOOR:;;;North of house;nowhere;n;s;The forest looks mean and scary. You don't want to go there.
+DOOR:;;;South of house;nowhere;s;s;The forest looks mean and scary. You don't want to go there.
+DOOR:;;;East of house;nowhere;e;s;The forest looks mean and scary. You don't want to go there.
+DOOR:;;;Cellar;nowhere;w;e;You try to climb, even though it seemed unclimbable. You promptly fall back down.
 DOOR:;;;Kitchen;Living room;w;e;
+DOOR:;;;West field;nowhere;e;w;The door is boarded shut. However hard you try, it still wont budge.
+DOOR:;;;North of house;nowhere;s;n;All the windows are barred. The curtains are blocking your view inside.
+DOOR:;;;South of house;nowhere;n;s;All the windows are barred. The curtains are blocking your view inside.
 DOOR:_gothicdoor;;;Living room;nowhere;w;e;The door is barred shut.
 DOOR:;;;Cellar;Troll's room;n;s;
 DOOR:hatch#trapdoor#door;;;Living room;Cellar;d;u;No exit for direction: d
 DOOR:window;;;East of house;Kitchen;in;out;The window is closed.
 DOOR:;;;West field;North of house;n;w;
 DOOR:;;;North of house;East of house;e;n;
-EVENT:open;window;window;open;MESSAGE#You've won the game. Congratulations!;QUIT#
 EVENT:open;window;window;!open;LOCKMESSAGE#;MESSAGE#With great effort, you open the window far enough to allow passage.;FAILMESSAGE#It's already open, dimwit!;SET#open
 EVENT:close;window;window;open;FAILMESSAGE#Close a closed window? That's just stupid.;LOCKMESSAGE#The window is closed.;MESSAGE#You only barely manage to close the window.;UNSET#open
 EVENT:pull;carpet;trapdoor;!rugpulled;FAILMESSAGE#Having moved the carpet previously, you find it impossible to move it again.;LOCKMESSAGE#The door is closed;MESSAGE#With a great effort, the rug is moved to one side of the room. With the rug moved, the dusty cover of a closed trapdoor appears.;FINDABLE#1;SET#Foobar;SET#rugpulled
@@ -37,10 +49,29 @@ EVENT:open;trapdoor;trapdoor;open&!shut;MESSAGE#It's already open!
 EVENT:open;trapdoor;trapdoor;rugpulled&!open;LOCKMESSAGE#;MESSAGE#The door reluctantly opens to reveal a rickety staircase descending into darkness.;SET#open
 EVENT:light;Lamp;Lamp;!lightsource;FAILMESSAGE#It's already turned on!;MESSAGE#You light up the lamp.;SET#lightsource
 EVENT:douse;Lamp;Lamp;lightsource;FAILMESSAGE#It's already turned off!;MESSAGE#You turn off the lamp.;UNSET#lightsource
-EVENT:onEnter#Cellar;PC;trapdoor;!shut;LOCKMESSAGE#The door is barred from the other side;MESSAGE#The door crashes shut, and you hear someone barring it.;SET#shut
+EVENT:onEnter#Cellar;PC;trapdoor;!shut&!end;LOCKMESSAGE#The door is barred from the other side;MESSAGE#The door crashes shut, and you hear someone barring it.;SET#shut
 EVENT:open;trapdoor;trapdoor;shut;MESSAGE#You can't open the door. It is barred from the other side.
 EVENT:onAction#;Troll;Troll;playerishere&!active;SET#active
 EVENT:onAction#;Troll;Troll;playerishere&active;MESSAGE#There's a menacing troll standing in the middle of the room.;MESSAGE#;MESSAGE#Troll: I SMASH PUNY HUMAN;ATTACK#
 EVENT:onAction#;Troll;Troll;!playerishere&active;MESSAGE#The troll followed you;FOLLOW#
 EVENT:bake;bread;PC;;MESSAGE#You bake some bread!;CREATEITEM#Bread;;A normal loaf of bread;0
 EVENT:eat;bread;PC;;DESTROYITEM#
+EVENT:push;Button;PC;!buttonpushed;MESSAGE#You push the button;FAILMESSAGE#You already pushed the button;SET#buttonpushed
+EVENT:push;Button;trapdoor;!buttonpushed;SET#buttonpushed
+EVENT:pull;Lever;PC;buttonpushed&!leverpulled;CREATEITEM#Treasure;;The lost treasure of atlantis;0
+EVENT:pull;Lever;trapdoor;buttonpushed&!leverpulled;UNSET#shut;SET#end;LOCKMESSAGE#
+EVENT:pull;Lever;PC;buttonpushed&!leverpulled;MESSAGE#You pull the lever and a treasure falls out of the wall. You pick it up.;SET#leverpulled
+EVENT:onEnter#West field;PC;PC;leverpulled;MESSAGE#You've won the game. Congratulations!;QUIT#
+EVENT:drink;Water;PC;;MESSAGE#Drinking water? What are you, a crazy person?
+EVENT:read;letter;PC;;MESSAGE#It's gibberish to you.
+EVENT:eat;Potato;PC;;MESSAGE#It's hard as a stone. You don't manage to eat it.
+EVENT:open;mailbox;mailbox;;MESSAGE#The mailbox is already open!
+EVENT:pick;carpet;carpet;;MESSAGE#It's too heavy to pick up.
+EVENT:take;carpet;carpet;;MESSAGE#It's too heavy to pick up.
+
+DEFINE:i;inventory
+DEFINE:walk;go
+DEFINE:crawl;go
+DEFINE:move;pull
+DEFINE:remove;pull
+DEFINE:take;pick

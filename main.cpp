@@ -16,12 +16,12 @@ int main() {
 
   Game g("worldfile");
   
-  cout << "#############" << endl;
+  /*cout << "#############" << endl;
   cout << g.serialize() << endl;
-  cout << "#############" << endl;
+  cout << "#############" << endl;*/
   
   while (g.status() == "") {
-    for(int i = 0; i < g.getActors().size();i++) { //TODO: Use .nextActor instead.
+    for(int i = 0; i < g.getActors().size();i++) { 
       Actor* curr = g.getActors()[i];
       curr->action();
     }

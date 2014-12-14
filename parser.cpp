@@ -6,6 +6,7 @@
 #include <iostream>
 #include "game.h"
 #include "room.h"
+#include <unordered_map>
 
 using std::string;
 using std::locale;
@@ -49,10 +50,7 @@ bool Parser::parse(std::string s) {
   }
 
   auto it = verbs.find(command);
-  if (it != verbs.end()) {
-    (p->*verbs[command])(args);
-    return true;
-  } else if (command.find_first_of('#') == -1){
+  if (command.find_first_of('#') == -1){
     int space2 = args.find_first_of(" ");
     std::string target = args.substr(0,space2);
     finder f = (p->getLocation())->find(target,0);
@@ -62,6 +60,17 @@ bool Parser::parse(std::string s) {
       }
     }
   }
+  if (it != verbs.end()) {
+    (p->*verbs[command])(args);
+    return true;
+  }
+  auto temp = g->definitions;
+  auto foobar = temp.find(command);
+  if (foobar != temp.end()) {
+    string newCmd = temp[command] + " " + args;
+    return parse(newCmd);
+  }
+
   if (g->bufferEmpty()) {
     g->push("I don't understand that.");
   }
