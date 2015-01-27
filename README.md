@@ -66,4 +66,88 @@ Define is used to define aliases. It takes two parameters. It makes it so the fi
 
 ### Scripting
 
-Coming later!
+Scripting is based on the EVENT-tag. Each EVENT-row contains an event that causes it, a condition to check and if the condition is true, it will run a bunch of actions.
+
+#### Flags
+
+One very important part of the scripting is the flag system. Flags are just strings that can be stored in an actor to save states. It's mainly used for conditions but can be used for other things, like the lighting as well. All actors in the game can have a set of flags. When an event is triggered, it will check if the specified actor has those flags. If it does it will run the action.
+
+#### Events
+
+There are two types of events. The first type is a normal command and allows you to define custom behavior with commands that you don't want to hardcode. Example: pull carpet. In the EVENT-tag, the event parameters are the first three of the parameters on the line. The first is the name of the command (e.g pull). The second is the id of the actor that the command targets and the third is the id of the actor that is supposed to be checked. This actor is the one that the condition checks the flags on and this is the actor that will be targeted by the actions. 
+
+So if you want a light that turns on and off when you click a button, you'd want the event to look something like: EVENT:push;button;light
+
+#### Conditions
+
+Conditions is the fourth parameter in the event tag. It is a boolean expression that has to be true. It can contain names of flags, "!" for negation, "&" for boolean and and "|" for boolean or. A flag is considered true if the actor in the third argument has the flag. Example condition: "buttonpushed&!leverpulled" (if the button is pushed and the lever is not pulled:).
+
+#### Actions
+
+Actions are run when an event is triggered if and only if the conditions evauluates to true. One thing worth noting is that the conditions will be evaluated separately for each action and each action will be executed it in the order it's written in the worldfile. This is important since if you have an action early on that changes a flag in the condition, it can cause the condition to evaluate to false, making the rest of the actions not run.
+
+There are several actions and it's easy to add more. Each action is separated by semi-colons. An action starts with the action name in capital letters and any additional parameters are added after it, each separated by a hashtag.
+
+Here are all the currently implemented actions:
+
+* Message: 
+
+This action simply prints a message in the game. It only has one parameter, the message to print.
+
+* Set:
+
+This action sets a flag on the target specified. 
+
+* Unset:
+
+This action unsets a flag on the target specified.
+
+* Lockmessage:
+
+This action changes the targeted door's lockmessage. This can be used to lock doors or unlocking them (by setting it to an empty string).
+
+* Createitem:
+
+Creates an item. Takes three parameters, the name, the description and if it's hidden or not.
+
+* Destroyitem:
+
+Destroys the specified item.
+
+* Failmessage:
+
+This action is special and is run only if the conditions evaluate to false. It's a way to print something if the event fails due to the condition.
+
+* Follow:
+
+Small hack for the troll AI. When executed, looks if the player is in a neighboring room and in that case moves to that room.
+
+* Attack:
+
+Attacks the target.
+
+* Quit:
+
+Quits the game.
+
+#### Special events
+
+The events described before are bound to commands written by the player. There are currently two other special events that can be used for other interesting features.
+
+* onEnter:
+
+onEnter takes a room name and is run when someone enters that room. In the example, it is used to automatically lock the door behind the player when the player enters a certain room.
+
+* onAction:
+
+Each character gets the chance to do an action each turn. This event can be used to decide what an NPC does on it's turn.
+
+#### Cool stuff
+
+##### Lightning
+
+A room is considered dark if it was created as dark and there's no actor acting as a lightsource in the room. The lightsource mechanic is integrated with the flags and anything with the "lightsource" flag on it will light up the room. This makes it easy to implement lightning logic in the worldfile if one would like to.
+
+##### AI
+
+The Troll AI is currently implemented mostly with scripting. Using a small hack that makes it so all actors get the "playerishere" flag if the unit is in the same room and a special "follow" action to follow the player around, it was possible to implement a decent AI. The Troll stays in its room until the player comes in, at which point the troll is "activated" by setting the active flag. Then if the player leaves the room, it will follow, otherwise it will attack.
