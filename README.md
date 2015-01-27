@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This project was created for an course in program construction in C++ by @Siretu and @raindirve
+This project was created for an course in program construction in C++ by [@Siretu](https://github.com/user/Siretu) and [@raindirve](https://github.com/user/raindirve)
 
 ### Installation
 
